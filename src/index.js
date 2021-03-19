@@ -3,10 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 function Square(props) {
+  if (props.index === props.activeSquare) {
+  }
   return (
     <button
       className={
-        "square " + (props.index === props.activeSquare - 1 ? "active" : "")
+        "square " + (props.index === props.activeSquare ? "active" : "")
       }
       onClick={props.onClick}
     >
@@ -74,15 +76,18 @@ class Game extends React.Component {
   }
 
   handleMouseEnter(i) {
-    console.log("mouse enter ", i);
+    const moveIndex = this.state.moveIndice[i];
+
+    const activeSquare =
+      (moveIndex[0] == 1 ? 0 : moveIndex[0] == 2 ? 3 : 6) + moveIndex[1];
+    console.log(activeSquare);
     this.setState({
       ...this.state,
-      activeSquare: i,
+      activeSquare: activeSquare - 1,
     });
   }
 
   handleMouseLeave() {
-    console.log("mouse leave");
     this.setState({
       ...this.state,
       activeSquare: -1,
@@ -115,7 +120,6 @@ class Game extends React.Component {
   }
 
   render() {
-    console.log("render works");
     const history = this.state.history;
     const moveIndice = this.state.moveIndice;
     const current = history[this.state.stepNumber];
